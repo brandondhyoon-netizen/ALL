@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 리더십 랩 — Knowing → Doing → Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0f;
+    --paper: #f9f6f0;
+    --amber: #e8a030;
+    --amber-light: #f5c060;
+    --teal: #2a9d8f;
+    --teal-dark: #1d6e63;
+    --charcoal: #1a1a20;
+    --mist: #e8e4dc;
+    --lead: #4a4a56;
+    --gold-grad: linear-gradient(135deg, #e8a030, #f5c060);
+    --teal-grad: linear-gradient(135deg, #2a9d8f, #52c5b7);
+    --dark-grad: linear-gradient(160deg, #0d0d0f 0%, #1a1a20 50%, #141420 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--ink);
+    color: #e8e4dc;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,13,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(232,160,48,0.15);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--amber);
+    letter-spacing: 0.03em;
+  }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(232,228,220,0.7);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--amber); }
+  .nav-cta {
+    background: var(--amber);
+    color: var(--ink) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-weight: 700 !important;
+  }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+  }
+  .hamburger span { width: 22px; height: 2px; background: var(--amber); display: block; transition: all 0.3s; }
+
+  /* ── HERO BOX BUTTONS ── */
+  .hero-btn-row { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.8rem; }
+  .hero-box-btn {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.4rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .primary-box {
+    background: var(--amber);
+    color: var(--ink);
+  }
+  .primary-box:hover { background: var(--amber-light); transform: translateX(4px); }
+  .secondary-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(232,228,220,0.2);
+    color: var(--mist);
+  }
+  .secondary-box:hover { border-color: var(--amber); color: var(--amber-light); transform: translateX(4px); }
+  .hero-box-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .hero-box-text { flex: 1; }
+  .hero-box-text strong { display: block; font-size: 0.92rem; font-weight: 700; margin-bottom: 0.15rem; }
+  .hero-box-text small { font-size: 0.75rem; opacity: 0.65; }
+  .hero-box-arrow { font-size: 1.1rem; opacity: 0.6; }
+
+  /* ── AGENDA NAV ── */
+  .agenda-nav {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .agenda-item {
+    display: flex; flex-direction: column;
+    padding: 0.8rem 0.7rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,228,220,0.07);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .agenda-item:hover { background: rgba(232,160,48,0.1); border-color: rgba(232,160,48,0.3); transform: translateY(-2px); }
+  .agenda-num { font-size: 0.65rem; color: var(--amber); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+  .agenda-label { font-size: 0.82rem; font-weight: 700; color: var(--mist); margin-bottom: 0.15rem; }
+  .agenda-sub { font-size: 0.7rem; color: rgba(232,228,220,0.4); }
+
+
+  #hero {
+    min-height: 100vh;
+    background: var(--dark-grad);
+    display: flex; align-items: center; justify-content: center;
+    padding: 7rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(42,157,143,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 20% 80%, rgba(232,160,48,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    max-width: 1100px; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid rgba(232,160,48,0.5);
+    border-radius: 2px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--amber);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: rgba(232,228,220,0.65);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .hero-flow {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .flow-item {
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+    font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .flow-item.k { background: rgba(232,160,48,0.2); color: var(--amber-light); border: 1px solid rgba(232,160,48,0.3); }
+  .flow-item.d { background: rgba(42,157,143,0.2); color: #52c5b7; border: 1px solid rgba(42,157,143,0.3); }
+  .flow-item.p { background: rgba(138,108,180,0.2); color: #b39ddb; border: 1px solid rgba(138,108,180,0.3); }
+  .flow-arrow { color: rgba(232,228,220,0.3); font-size: 1.1rem; }
+  .btn-primary {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    background: var(--amber);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover { background: var(--amber-light); transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--mist);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid rgba(232,228,220,0.3);
+    border-radius: 2px;
+    transition: all 0.25s;
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  .btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+  .hero-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+  .hero-quote {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--amber-light);
+    margin-bottom: 2rem;
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+  }
+  .stat-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(232,228,220,0.08);
+    border-radius: 3px;
+    padding: 1rem;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.72rem; color: rgba(232,228,220,0.5); line-height: 1.4; }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 0.8rem; font-weight: 700;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900; line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1rem; color: rgba(232,228,220,0.6);
+    line-height: 1.8; max-width: 600px;
+  }
+
+  /* ── WHY NOW ── */
+  #why { background: #111116; }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .why-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,228,220,0.08);
+    border-radius: 4px;
+    padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .why-card:hover { border-color: rgba(232,160,48,0.4); transform: translateY(-4px); }
+  .why-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .why-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .why-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .why-card p { font-size: 0.82rem; color: rgba(232,228,220,0.55); line-height: 1.7; }
+
+  /* ── BRAIN SCIENCE ── */
+  #brain { background: var(--charcoal); }
+  .aefc-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .aefc-card {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .aefc-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .aefc-card:hover::before { border-color: rgba(232,160,48,0.4); }
+  .aefc-a { background: rgba(232,160,48,0.12); }
+  .aefc-e { background: rgba(42,157,143,0.12); }
+  .aefc-ef { background: rgba(100,130,200,0.12); }
+  .aefc-c { background: rgba(160,100,180,0.12); }
+  .aefc-letter {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem; line-height: 1;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+  .aefc-a .aefc-letter { color: var(--amber); }
+  .aefc-e .aefc-letter { color: #52c5b7; }
+  .aefc-ef .aefc-letter { color: #8baaf0; }
+  .aefc-c .aefc-letter { color: #c98df0; }
+  .aefc-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .aefc-card p { font-size: 0.8rem; color: rgba(232,228,220,0.6); line-height: 1.7; }
+
+  /* ── MODULES ── */
+  #modules { background: #0d0d0f; }
+  .modules-tabs {
+    display: flex; gap: 0; margin-top: 3rem; margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(232,228,220,0.1);
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 0.9rem 1.8rem;
+    background: none; border: none;
+    color: rgba(232,228,220,0.45);
+    cursor: pointer;
+    font-size: 0.85rem; font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--amber); border-bottom-color: var(--amber); }
+  .tab-btn:hover { color: rgba(232,228,220,0.8); }
+  .module-panel { display: none; }
+  .module-panel.active { display: block; }
+  .module-content {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start;
+  }
+  .module-meta h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.6rem; font-weight: 900; margin-bottom: 0.8rem;
+  }
+  .module-meta p { font-size: 0.87rem; color: rgba(232,228,220,0.6); line-height: 1.8; margin-bottom: 1.5rem; }
+  .module-ai-box {
+    background: rgba(232,160,48,0.08);
+    border: 1px solid rgba(232,160,48,0.25);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .module-ai-box h4 { font-size: 0.8rem; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .module-ai-box p { font-size: 0.82rem; color: rgba(232,228,220,0.7); line-height: 1.7; }
+  .topics-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .topic-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(232,228,220,0.08);
+    border-radius: 3px;
+    padding: 1.3rem;
+  }
+  .topic-num { font-size: 0.7rem; color: var(--amber); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .topic-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .topic-items { list-style: none; }
+  .topic-items li {
+    font-size: 0.78rem; color: rgba(232,228,220,0.55);
+    padding: 0.25rem 0; padding-left: 1rem; position: relative; line-height: 1.5;
+  }
+  .topic-items li::before { content: '·'; position: absolute; left: 0; color: var(--amber); }
+
+  /* ── AI COPILOT ── */
+  #copilot { background: var(--charcoal); }
+  .copilot-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .copilot-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(232,228,220,0.1);
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .copilot-card:hover { border-color: rgba(232,160,48,0.35); }
+  .copilot-card::before {
+    content: attr(data-num);
+    position: absolute; right: 1.5rem; top: 1.2rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 4rem; color: rgba(232,160,48,0.06);
+    line-height: 1;
+  }
+  .copilot-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--amber-light); }
+  .copilot-card p { font-size: 0.83rem; color: rgba(232,228,220,0.6); line-height: 1.7; }
+
+  /* ── DEMO AI CHAT ── */
+  #demo { background: #0a0a0e; }
+  .demo-wrapper {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start;
+    margin-top: 3rem;
+  }
+  .demo-desc h3 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; }
+  .demo-desc p { font-size: 0.87rem; color: rgba(232,228,220,0.6); line-height: 1.8; margin-bottom: 1.5rem; }
+  .prompt-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .chip {
+    padding: 0.45rem 0.9rem;
+    background: rgba(42,157,143,0.12);
+    border: 1px solid rgba(42,157,143,0.3);
+    border-radius: 20px;
+    font-size: 0.78rem; color: #52c5b7;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .chip:hover { background: rgba(42,157,143,0.25); }
+  .chat-window {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,228,220,0.12);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .chat-header {
+    background: rgba(0,0,0,0.4);
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    border-bottom: 1px solid rgba(232,228,220,0.08);
+  }
+  .chat-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .chat-dot.green { background: #2a9d8f; }
+  .chat-dot.amber { background: var(--amber); }
+  .chat-title { font-size: 0.8rem; font-weight: 700; color: rgba(232,228,220,0.7); }
+  .chat-body {
+    height: 320px; overflow-y: auto;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .chat-body::-webkit-scrollbar { width: 4px; }
+  .chat-body::-webkit-scrollbar-thumb { background: rgba(232,160,48,0.3); border-radius: 2px; }
+  .msg {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+  }
+  .msg-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
+  }
+  .msg-avatar.ai { background: linear-gradient(135deg, #2a9d8f, #1d6e63); color: white; }
+  .msg-avatar.user { background: rgba(232,160,48,0.3); color: var(--amber); border: 1px solid rgba(232,160,48,0.4); }
+  .msg-bubble {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(232,228,220,0.08);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    font-size: 0.83rem; line-height: 1.7;
+    color: rgba(232,228,220,0.85);
+    max-width: 85%;
+  }
+  .msg.user .msg-bubble { background: rgba(232,160,48,0.08); border-color: rgba(232,160,48,0.15); }
+  .chat-input-area {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(232,228,220,0.08);
+    display: flex; gap: 0.8rem;
+  }
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(232,228,220,0.15);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    color: var(--mist);
+    font-size: 0.85rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: rgba(232,160,48,0.5); }
+  .chat-input::placeholder { color: rgba(232,228,220,0.3); }
+  .chat-send {
+    padding: 0.7rem 1.2rem;
+    background: var(--amber);
+    color: var(--ink);
+    border: none; border-radius: 3px;
+    cursor: pointer; font-weight: 700; font-size: 0.83rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: background 0.2s;
+  }
+  .chat-send:hover { background: var(--amber-light); }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .typing-indicator { display: flex; gap: 4px; padding: 0.5rem 0; }
+  .typing-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(232,160,48,0.6);
+    animation: typingBounce 1.4s infinite ease-in-out;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  /* ── OUTCOMES ── */
+  #outcomes { background: #111116; }
+  .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .outcome-card {
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .outcome-card.individual { background: linear-gradient(145deg, rgba(232,160,48,0.12), rgba(232,160,48,0.03)); border: 1px solid rgba(232,160,48,0.25); }
+  .outcome-card.team { background: linear-gradient(145deg, rgba(42,157,143,0.12), rgba(42,157,143,0.03)); border: 1px solid rgba(42,157,143,0.25); }
+  .outcome-card.org { background: linear-gradient(145deg, rgba(138,108,180,0.12), rgba(138,108,180,0.03)); border: 1px solid rgba(138,108,180,0.25); }
+  .outcome-level { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700; }
+  .individual .outcome-level { color: var(--amber); }
+  .team .outcome-level { color: #52c5b7; }
+  .org .outcome-level { color: #b39ddb; }
+  .outcome-card h3 { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 900; margin-bottom: 1.2rem; }
+  .outcome-items { list-style: none; margin-bottom: 1.8rem; }
+  .outcome-items li {
+    font-size: 0.83rem; color: rgba(232,228,220,0.65);
+    padding: 0.35rem 0; padding-left: 1.2rem;
+    position: relative; line-height: 1.5;
+    border-bottom: 1px solid rgba(232,228,220,0.05);
+  }
+  .outcome-items li::before { content: '✓'; position: absolute; left: 0; font-size: 0.7rem; }
+  .individual .outcome-items li::before { color: var(--amber); }
+  .team .outcome-items li::before { color: #52c5b7; }
+  .org .outcome-items li::before { color: #b39ddb; }
+  .kpi-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em;
+  }
+  .individual .kpi-tag { background: rgba(232,160,48,0.2); color: var(--amber-light); }
+  .team .kpi-tag { background: rgba(42,157,143,0.2); color: #52c5b7; }
+  .org .kpi-tag { background: rgba(138,108,180,0.2); color: #b39ddb; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--charcoal); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .contact-info h3 { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; }
+  .contact-info p { font-size: 0.87rem; color: rgba(232,228,220,0.6); line-height: 1.8; margin-bottom: 2rem; }
+  .download-btn {
+    display: flex; align-items: center; gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    background: rgba(232,160,48,0.1);
+    border: 1px solid rgba(232,160,48,0.4);
+    border-radius: 3px;
+    color: var(--amber-light);
+    text-decoration: none;
+    font-size: 0.87rem; font-weight: 700;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .download-btn:hover { background: rgba(232,160,48,0.2); border-color: var(--amber); }
+  .download-btn svg { flex-shrink: 0; }
+  form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field label {
+    display: block; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.08em; color: rgba(232,228,220,0.5);
+    text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(232,228,220,0.15);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    color: var(--mist);
+    font-size: 0.87rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(232,160,48,0.5); }
+  .field select option { background: var(--charcoal); }
+  .field textarea { resize: vertical; min-height: 100px; }
+  .form-status { padding: 0.8rem 1rem; border-radius: 3px; font-size: 0.85rem; display: none; }
+  .form-status.success { background: rgba(42,157,143,0.15); border: 1px solid rgba(42,157,143,0.3); color: #52c5b7; display: block; }
+  .form-status.error { background: rgba(200,80,80,0.15); border: 1px solid rgba(200,80,80,0.3); color: #f08080; display: block; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #070709;
+    padding: 2.5rem 2rem;
+    border-top: 1px solid rgba(232,228,220,0.06);
+    text-align: center;
+  }
+  .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--amber); margin-bottom: 0.8rem; }
+  .footer-sub { font-size: 0.78rem; color: rgba(232,228,220,0.3); line-height: 1.7; }
+
+  /* ── DIFFERENTIATOR TABLE ── */
+  #diff { background: #0d0d0f; }
+  .diff-table {
+    width: 100%; border-collapse: collapse; margin-top: 3rem;
+  }
+  .diff-table th, .diff-table td {
+    padding: 1rem 1.2rem; font-size: 0.83rem;
+    border-bottom: 1px solid rgba(232,228,220,0.06);
+    text-align: center;
+  }
+  .diff-table th { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,228,220,0.4); font-weight: 700; }
+  .diff-table td:first-child { text-align: left; font-weight: 700; color: rgba(232,228,220,0.7); }
+  .badge-x { color: #e57373; font-size: 1rem; }
+  .badge-tri { color: var(--amber-light); font-size: 1rem; }
+  .badge-check { color: #52c5b7; font-size: 1rem; }
+  .our-col { color: var(--amber-light); font-weight: 700; }
+  .our-col-header { color: var(--amber); }
+  .highlight-row td { background: rgba(232,160,48,0.05); }
+  .tag-badge {
+    display: inline-block; padding: 0.25rem 0.6rem;
+    background: rgba(42,157,143,0.15); border: 1px solid rgba(42,157,143,0.3);
+    border-radius: 2px; font-size: 0.72rem; color: #52c5b7;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 0.8rem 1.2rem; }
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: fixed; top: 56px; left: 0; right: 0;
+      background: rgba(13,13,15,0.97);
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(232,160,48,0.2);
+      z-index: 99;
+    }
+    .hamburger { display: flex; }
+    .hero-btn-row { flex-direction: column; }
+    .agenda-nav { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .aefc-grid { grid-template-columns: 1fr 1fr; }
+    .module-content { grid-template-columns: 1fr; }
+    .topics-list { grid-template-columns: 1fr; }
+    .copilot-grid { grid-template-columns: 1fr; }
+    .outcomes-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .demo-wrapper { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.2rem; }
+    .tab-btn { padding: 0.7rem 1rem; font-size: 0.78rem; }
+    .diff-table { font-size: 0.75rem; }
+    .diff-table th, .diff-table td { padding: 0.7rem 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI Leadership Lab</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#why">Why Now</a></li>
+    <li><a href="#brain">학습 철학</a></li>
+    <li><a href="#modules">모듈</a></li>
+    <li><a href="#demo">AI 체험</a></li>
+    <li><a href="#outcomes">성과</a></li>
+    <li><a href="#contact" class="nav-cta">문의하기</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge fade-in">2026 · AI Augmented Leadership</div>
+      <h1 class="hero-title fade-in delay-1">
+        리더의 고민을<br><em>행동</em>으로,<br>행동을 <em>성과</em>로
+      </h1>
+      <p class="hero-subtitle fade-in delay-2">
+        뇌과학 기반 학습 설계와 생성형 AI 코파일럿이 결합된,<br>
+        대한민국 기업을 위한 팀장 리더십 전환 프로그램
+      </p>
+      <div class="hero-flow fade-in delay-3">
+        <span class="flow-item k">Knowing</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item d">Doing</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item p">Performance</span>
+      </div>
+      <div class="fade-in delay-4 hero-btn-row">
+        <a href="#modules" class="hero-box-btn primary-box">
+          <span class="hero-box-icon">📋</span>
+          <span class="hero-box-text">
+            <strong>프로그램 살펴보기</strong>
+            <small>STPC 4개 모듈 상세 보기</small>
+          </span>
+          <span class="hero-box-arrow">→</span>
+        </a>
+        <a href="#demo" class="hero-box-btn secondary-box">
+          <span class="hero-box-icon">🤖</span>
+          <span class="hero-box-text">
+            <strong>AI 체험해보기</strong>
+            <small>AI 코파일럿 지금 바로 체험</small>
+          </span>
+          <span class="hero-box-arrow">→</span>
+        </a>
+      </div>
+      <!-- Agenda Quick Nav -->
+      <div class="agenda-nav fade-in delay-4">
+        <a href="#why" class="agenda-item">
+          <span class="agenda-num">01</span>
+          <span class="agenda-label">Why Now</span>
+          <span class="agenda-sub">개발 배경</span>
+        </a>
+        <a href="#brain" class="agenda-item">
+          <span class="agenda-num">02</span>
+          <span class="agenda-label">학습 철학</span>
+          <span class="agenda-sub">뇌과학 기반 설계</span>
+        </a>
+        <a href="#modules" class="agenda-item">
+          <span class="agenda-num">03</span>
+          <span class="agenda-label">프로그램</span>
+          <span class="agenda-sub">STPC 4개 모듈</span>
+        </a>
+        <a href="#outcomes" class="agenda-item">
+          <span class="agenda-num">04</span>
+          <span class="agenda-label">학습 성과</span>
+          <span class="agenda-sub">측정되는 변화</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-card fade-in delay-2">
+      <p class="hero-quote">"한 명의 리더가 밝혀지면,<br>팀 전체가 움직이기 시작합니다."</p>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-num">75%</div>
+          <div class="stat-label">리더십 교육이 행동 변화로<br>이어지지 않는 현실</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$3,600억</div>
+          <div class="stat-label">글로벌 리더십 교육<br>연간 투자 규모</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">25%</div>
+          <div class="stat-label">리더십 교육<br>만족도</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1억원</div>
+          <div class="stat-label">부적합 리더 1명이<br>초래하는 연간 손실</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-tag">01 · Why Now</div>
+    <h2 class="section-title">왜 지금, AI 리더십 랩인가?</h2>
+    <p class="section-sub">한국 기업이 직면한 4가지 리더십 위기와 우리가 제시하는 해답</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-num">AX</div>
+        <h3>AI 전환기 대응</h3>
+        <p>AI가 업무를 재편하는 속도 속에서, 리더는 AI를 도구가 아닌 코파일럿으로 활용하는 새로운 역량이 요구됩니다.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌀</div>
+        <div class="why-num">VUCA</div>
+        <h3>불확실성 환경</h3>
+        <p>변동성(V)·불확실성(U)·복잡성(C)·모호성(A)의 시대, 조정경기 리더십에서 래프팅 리더십으로의 전환이 필요합니다.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">👥</div>
+        <div class="why-num">MZ</div>
+        <h3>세대 간 리더십</h3>
+        <p>MZ세대 구성원이 원하는 심리적 안정감·코칭·공정한 성과관리를 실현하는 리더십 스킬이 조직 성패를 가릅니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAIN SCIENCE -->
+<section id="brain">
+  <div class="section-inner">
+    <div class="section-tag">02 · 학습 철학</div>
+    <h2 class="section-title">뇌가 진짜 학습하는 방식으로<br>설계된 프로그램</h2>
+    <p class="section-sub">Stanislas Dehaene의 인지 학습 원리를 기반으로 설계된 A-E-EF-C 4단계 학습 프로세스</p>
+    <div class="aefc-grid">
+      <div class="aefc-card aefc-a">
+        <div class="aefc-letter">A</div>
+        <h3>주의 집중<br><small style="font-weight:400;font-size:0.78rem;opacity:0.7">Attention</small></h3>
+        <p>뇌는 주의를 기울일 때만 학습합니다. 짧고 강렬한 도입으로 호기심을 자극합니다.</p>
+      </div>
+      <div class="aefc-card aefc-e">
+        <div class="aefc-letter">E</div>
+        <h3>적극 참여<br><small style="font-weight:400;font-size:0.78rem;opacity:0.7">Active Engagement</small></h3>
+        <p>가설을 세우고 검증하는 능동적 학습. 토론·진단·실습 중심의 참여형 학습입니다.</p>
+      </div>
+      <div class="aefc-card aefc-ef">
+        <div class="aefc-letter">EF</div>
+        <h3>오류와 피드백<br><small style="font-weight:400;font-size:0.78rem;opacity:0.7">Error &amp; Feedback</small></h3>
+        <p>안전한 공간에서 에러를 만들고 Buddy·퍼실리테이터·AI의 구조화된 피드백으로 고도화합니다.</p>
+      </div>
+      <div class="aefc-card aefc-c">
+        <div class="aefc-letter">C</div>
+        <h3>통합과 통찰<br><small style="font-weight:400;font-size:0.78rem;opacity:0.7">Consolidation</small></h3>
+        <p>반복과 성찰을 통해 장기기억이 됩니다. 생성형 AI로 현업에서 즉시 적용 가능하도록 합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATOR -->
+<section id="diff">
+  <div class="section-inner">
+    <div class="section-tag">03 · 차별화</div>
+    <h2 class="section-title">왜 다른 리더십 프로그램이 아닌가?</h2>
+    <p class="section-sub">4가지 기준으로 보는 AI 리더십 랩의 명확한 차별화</p>
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th>비교 기준</th>
+          <th>일반 리더십 교육</th>
+          <th>AI 도구 활용 교육</th>
+          <th class="our-col-header">AI 리더십 랩 ★</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td>행동 전이 (Transfer)</td>
+          <td><span class="badge-x">✗</span> 교육 후 미지원</td>
+          <td><span class="badge-tri">▲</span> 도구 제공·미연결</td>
+          <td class="our-col"><span class="badge-check">✓</span> <span class="tag-badge">30–90일 Follow-up</span></td>
+        </tr>
+        <tr>
+          <td>AI 통합 수준</td>
+          <td><span class="badge-x">✗</span> 없음</td>
+          <td><span class="badge-tri">▲</span> 단순 생성 AI 실습</td>
+          <td class="our-col"><span class="badge-check">✓</span> <span class="tag-badge">생성형 AI 24시간 지원</span></td>
+        </tr>
+        <tr class="highlight-row">
+          <td>뇌과학 설계</td>
+          <td><span class="badge-x">✗</span> 강사 경험 기반</td>
+          <td><span class="badge-x">✗</span> 미적용</td>
+          <td class="our-col"><span class="badge-check">✓</span> <span class="tag-badge">A-E-EF-C 4단계</span></td>
+        </tr>
+        <tr>
+          <td>개인화 수준</td>
+          <td><span class="badge-x">✗</span> 일률 강의식</td>
+          <td><span class="badge-tri">▲</span> 부분 맞춤</td>
+          <td class="our-col"><span class="badge-check">✓</span> <span class="tag-badge">AI 적응형 시나리오</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+  <div class="section-inner">
+    <div class="section-tag">04 · 프로그램</div>
+    <h2 class="section-title">STPC 리더십 모델 — 4개의 엔진</h2>
+    <p class="section-sub">자기 인식(Self)을 기반으로 팀의 결속(Team)과 성과(Performance)를 견인하고, 변화(Change)를 리딩하는 통합 로드맵</p>
+
+    <div class="modules-tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">S · 자기 관리</button>
+      <button class="tab-btn" onclick="switchTab(1)">T · 팀 관리</button>
+      <button class="tab-btn" onclick="switchTab(2)">P · 성과 관리</button>
+      <button class="tab-btn" onclick="switchTab(3)">C · 변화 관리</button>
+    </div>
+
+    <!-- MODULE 1 -->
+    <div class="module-panel active" id="panel-0">
+      <div class="module-content">
+        <div class="module-meta">
+          <h2>자기 관리<br><em style="font-style:normal;color:var(--amber)">Self Management</em></h2>
+          <p>모든 리더십의 시작: 나를 아는 것이 팀을 바꾸는 첫 번째 조건입니다.</p>
+          <p style="font-size:0.78rem;color:rgba(232,228,220,0.4)">⏱ 2h ~ 4h (요청에 따라 조정 가능)</p>
+          <br>
+          <div class="module-ai-box">
+            <h4>✦ 생성형 AI Peak Experience</h4>
+            <p><strong>나의 리더십 강점 발견</strong><br>강점 Top5 카드 → 생성형 AI 입력 → 나만의 리더십 스타일 파악 → 현업에서 강점 활용 방안</p>
+          </div>
+        </div>
+        <div class="topics-list">
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 01</div>
+            <h4>리더십 패러다임 전환: AI 시대, 리더를 다시 정의하다</h4>
+            <ul class="topic-items">
+              <li>[퀴즈] AI 전환기 경영 환경 STEP 분석</li>
+              <li>[강의] 리더의 역할 재정의</li>
+              <li>[제시] STPC 팀장 리더십 모델</li>
+              <li>[실습] 생성형 AI 활용 세팅</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 02</div>
+            <h4>정서적 지능(EQ): 사람을 움직이는 내면의 힘</h4>
+            <ul class="topic-items">
+              <li>[시청] 정서적 지능의 중요성</li>
+              <li>[강의] EQ의 4가지 영역</li>
+              <li>[진단] 리더의 EQ 진단</li>
+              <li>[성찰] 자기 개발 영역 파악</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 03</div>
+            <h4>강점 중심의 자기 인식: 강점이 스타일이 된다</h4>
+            <ul class="topic-items">
+              <li>[강의] 강점의 정의와 재능(Talent) 4영역</li>
+              <li>[진단] 나의 재능 발견하기</li>
+              <li>[AI] 강점 기반 리더십 스타일 파악</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 04</div>
+            <h4>회복탄력성과 자기 관리: 에너지를 설계하는 리더</h4>
+            <ul class="topic-items">
+              <li>[강의] 4대 에너지 관리 전략과 회복탄력성</li>
+              <li>[실습·AI] 나의 회복 루틴 설계 및 AI 피드백</li>
+              <li>[성찰] 자기 인식 및 관리 성찰</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 2 -->
+    <div class="module-panel" id="panel-1">
+      <div class="module-content">
+        <div class="module-meta">
+          <h2>팀 관리<br><em style="font-style:normal;color:#52c5b7">Team Management</em></h2>
+          <p>나를 알면 팀이 보입니다: 팀원이 스스로 움직이게 하는 신뢰와 코칭의 기술.</p>
+          <p style="font-size:0.78rem;color:rgba(232,228,220,0.4)">⏱ 2h ~ 4h (요청에 따라 조정 가능)</p>
+          <br>
+          <div class="module-ai-box" style="border-color:rgba(42,157,143,0.3);background:rgba(42,157,143,0.08)">
+            <h4 style="color:#52c5b7">✦ 생성형 AI Peak Experience</h4>
+            <p><strong>나만의 코칭 질문 만들기</strong><br>GROW 코칭 질문 확인 → 책임감을 개발하는 질문 → 자각 질문 → 나만의 코칭 프롬프트 제작</p>
+          </div>
+        </div>
+        <div class="topics-list">
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 01</div>
+            <h4>심리적 안정감: 성과를 만드는 안전한 테두리</h4>
+            <ul class="topic-items">
+              <li>[시청] 왜 똑똑한 팀이 실패하는가?</li>
+              <li>[진단] 우리 팀 심리적 안정감 온도계</li>
+              <li>[강의] 리더의 취약성(Vulnerability)과 신뢰</li>
+              <li>[토의] Fearless 문화를 가로막는 빌런 찾기</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 02</div>
+            <h4>코칭 & 업무 위임: AI를 활용한 임파워먼트</h4>
+            <ul class="topic-items">
+              <li>[강의] GROW 모델과 업무위임 5단계</li>
+              <li>[AI & App] GROW 기반 AI 코칭 라이브러리</li>
+              <li>[롤플레이] 자각·책임감 개발 코칭 시나리오</li>
+              <li>[작성] 나만의 키 코칭 질문 습관화</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 03</div>
+            <h4>구성원 맞춤 역량개발: 경험 중심의 로드맵</h4>
+            <ul class="topic-items">
+              <li>[강의] Skill Based Organization</li>
+              <li>[실습] 70:20:10 원칙과 경험 중심 개발</li>
+              <li>[작성] 팀의 핵심 경험 리스트 만들기</li>
+              <li>[AI] 팀의 핵심 경험 업데이트</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 04</div>
+            <h4>협업의 시너지 관리: 갈등을 넘어 진정한 협력으로</h4>
+            <ul class="topic-items">
+              <li>[강의] 조직 내 갈등의 효과적 관리</li>
+              <li>[진단] 나의 갈등관리 스타일 파악</li>
+              <li>[롤플레이] 사일로 컴파니의 긴급 대책 회의</li>
+              <li>[성찰] 팀 심리적 안정·구성원 육성 성찰</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="module-panel" id="panel-2">
+      <div class="module-content">
+        <div class="module-meta">
+          <h2>성과 관리<br><em style="font-style:normal;color:#b39ddb">Performance Management</em></h2>
+          <p>팀이 움직이면 성과가 따라옵니다: 공정하고 동기를 높이는 성과 관리의 재설계.</p>
+          <p style="font-size:0.78rem;color:rgba(232,228,220,0.4)">⏱ 2h ~ 4h (요청에 따라 조정 가능)</p>
+          <br>
+          <div class="module-ai-box" style="border-color:rgba(138,108,180,0.3);background:rgba(138,108,180,0.08)">
+            <h4 style="color:#b39ddb">✦ 생성형 AI Peak Experience</h4>
+            <p><strong>피드백 스크립트 만들기</strong><br>6 Box 모델 피드백 진단 → AID 피드백 방법론 이해 → 진단 결과에 따른 피드백 스크립트 제작</p>
+          </div>
+        </div>
+        <div class="topics-list">
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 01</div>
+            <h4>가치 정렬(Alignment): 성과의 북극성 수립</h4>
+            <ul class="topic-items">
+              <li>[강의] 기업의 비전 체계도 이해</li>
+              <li>[퀴즈] 미션 vs. 비전, 그리고 전략</li>
+              <li>[강의] 시야의 전환 — Balcony & Dancefloor</li>
+              <li>[실습] 전략의 Cascading 커뮤니케이션</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 02</div>
+            <h4>내적 동기부여: 구성원을 깨우는 동기의 스위치</h4>
+            <ul class="topic-items">
+              <li>[강의] 성과관리의 3가지 시크릿</li>
+              <li>[실험] 내적 동기부여의 중요성</li>
+              <li>[토의] 내적 동기부여를 강화하는 방법</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 03</div>
+            <h4>공정한 성과 관리: 성과 몰입을 높이는 공정 프로세스</h4>
+            <ul class="topic-items">
+              <li>[강의] 공평 vs. 공정, 3가지 원칙</li>
+              <li>[케이스] 공정성 이슈 사례 극복 방안</li>
+              <li>[작성] 공정한 성과관리 오퍼레이션 리듬</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 04</div>
+            <h4>1to1 피드백: 성과 향상을 위한 On-going 관리</h4>
+            <ul class="topic-items">
+              <li>[강의] On-going 관리 프로세스</li>
+              <li>[진단] 6-box 모델 진단과 피드백</li>
+              <li>[AI] AID 피드백 스크립트 생성</li>
+              <li>[성찰] 나의 피드백 대화 비교 성찰</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="module-panel" id="panel-3">
+      <div class="module-content">
+        <div class="module-meta">
+          <h2>변화 관리<br><em style="font-style:normal;color:#8baaf0">Change Management</em></h2>
+          <p>성과를 만드는 팀이 되었다면, 이제 변화를 이끄는 리더가 될 차례입니다.</p>
+          <p style="font-size:0.78rem;color:rgba(232,228,220,0.4)">⏱ 2h ~ 4h (요청에 따라 조정 가능)</p>
+          <br>
+          <div class="module-ai-box" style="border-color:rgba(100,130,200,0.3);background:rgba(100,130,200,0.08)">
+            <h4 style="color:#8baaf0">✦ 생성형 AI Peak Experience</h4>
+            <p><strong>변화 관리 로드맵 & 메시지</strong><br>팀의 변화 아젠다 선정 → 변화 관리 5단계 이해 → 로드맵 만들기 → One-Page 변화 메시지 작성</p>
+          </div>
+        </div>
+        <div class="topics-list">
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 01</div>
+            <h4>조직문화 점검: 우리 팀의 위치와 지향하는 문화</h4>
+            <ul class="topic-items">
+              <li>[강의] 조직 문화 4가지 유형 및 점검</li>
+              <li>[진단] 조직 문화 건강도 자가 진단</li>
+              <li>[토의] 진단 결과 해석 및 팀의 Real 모습</li>
+              <li>[실습] 우선순위 과제 선정</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 02</div>
+            <h4>변화 아젠다 선정: 우선순위가 변화를 만든다</h4>
+            <ul class="topic-items">
+              <li>[강의] 변화 아젠다 3대 기준 (U×I×F)</li>
+              <li>[실습] 우리 팀의 변화 필요 영역 맵핑</li>
+              <li>[피어컨설팅] 변화 아젠다 후보군 확정</li>
+              <li>[버디대화] 아젠다 발표 및 의지 선언</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 03</div>
+            <h4>변화 관리 전략: 존 코터의 5단계 성공 로드맵</h4>
+            <ul class="topic-items">
+              <li>[강의] 변화 관리 실패 원인과 5단계</li>
+              <li>[진단] 변화 저항 요소·준비도 체크</li>
+              <li>[토의] Quick Wins 설계 아이디어 회의</li>
+              <li>[AI] 변화 로드맵 초안 작성</li>
+            </ul>
+          </div>
+          <div class="topic-card">
+            <div class="topic-num">TOPIC 04</div>
+            <h4>변화 커뮤니케이션: 구성원의 자발적 참여를 위해</h4>
+            <ul class="topic-items">
+              <li>[강의] 변화곡선과 변화 소통의 3C</li>
+              <li>[AI] One-Page 변화 메시지 작성</li>
+              <li>[버디대화] 냉소적 질문 대응 롤플레이</li>
+              <li>[성찰] 프로그램 성찰과 현업 AI 활용 방안</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI COPILOT -->
+<section id="copilot">
+  <div class="section-inner">
+    <div class="section-tag">05 · AI 코파일럿</div>
+    <h2 class="section-title">교육이 끝나는 순간,<br>진짜 학습이 시작됩니다</h2>
+    <p class="section-sub">워크숍에서 기록한 강점·코칭 스크립트·피드백 노트가 생성형 AI에 저장됩니다. 현업의 결정적 순간마다 즉시 꺼내 쓰는 나만의 AI 리더십 코파일럿.</p>
+    <div class="copilot-grid">
+      <div class="copilot-card" data-num="01">
+        <h3>🔍 강점 기반의 성찰 파트너</h3>
+        <p>주 1회 자동 체크인: 이번 주 강점 활용 사례 입력 → 다음 주 실천 아이디어 & 성찰 질문 3개 제공. 월요일 오전, 막막한 리더를 위한 AI 주간 리더십 플랜.</p>
+      </div>
+      <div class="copilot-card" data-num="02">
+        <h3>🤝 리더십 코칭 어시스턴트</h3>
+        <p>팀원 1:1 면담 30분 전, GROW 코칭 질문 리스트 자동 생성. 내가 기록한 팀원 정보 기반 맞춤 코칭 시나리오를 즉시 제공합니다.</p>
+      </div>
+      <div class="copilot-card" data-num="03">
+        <h3>📝 피드백 스크립트 생성기</h3>
+        <p>피드백이 필요한 상황을 설명하면 생성형 AI가 AID 구조 기반의 구체적이고 공정한 피드백 문장을 30초 안에 초안 작성합니다.</p>
+      </div>
+      <div class="copilot-card" data-num="04">
+        <h3>🚀 변화 커뮤니케이션 코치</h3>
+        <p>팀이 어느 변화 곡선 단계인지 입력하면 변화 관리 단계에 맞는 소통 전략과 팀 공유 메시지를 즉시 생성합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI DEMO CHAT -->
+<section id="demo">
+  <div class="section-inner">
+    <div class="section-tag">06 · AI 체험</div>
+    <h2 class="section-title">지금 바로 AI 코파일럿을<br>체험해 보세요</h2>
+    <div class="demo-wrapper">
+      <div class="demo-desc">
+        <h3>리더십 고민, AI에게 물어보세요</h3>
+        <p>AI 리더십 랩 코파일럿 데모입니다. 팀 관리, 피드백, 코칭, 변화 관리 등 리더십 현장의 고민을 입력하면 AI가 실질적인 가이드를 제공합니다.</p>
+        <p style="font-size:0.8rem;color:rgba(232,228,220,0.4);margin-bottom:1.5rem;">자주 묻는 질문으로 빠르게 시작하세요:</p>
+        <div class="prompt-chips">
+          <span class="chip" onclick="setPrompt('팀원에게 피드백을 줘야 하는데 어떻게 말하면 좋을까요?')">피드백 방법</span>
+          <span class="chip" onclick="setPrompt('GROW 코칭 모델로 1on1 대화를 어떻게 시작하면 될까요?')">GROW 코칭</span>
+          <span class="chip" onclick="setPrompt('팀에 변화를 알려야 하는데 저항이 예상됩니다. 어떻게 소통해야 할까요?')">변화 소통</span>
+          <span class="chip" onclick="setPrompt('6 Box 모델로 저성과 팀원을 어떻게 진단하나요?')">6 Box 진단</span>
+          <span class="chip" onclick="setPrompt('심리적 안정감을 높이기 위해 리더로서 무엇을 해야 하나요?')">심리적 안정감</span>
+        </div>
+      </div>
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-dot green"></div>
+          <div class="chat-dot amber"></div>
+          <span class="chat-title">AI 리더십 랩 코파일럿</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+          <div class="msg">
+            <div class="msg-avatar ai">AI</div>
+            <div class="msg-bubble">안녕하세요! AI 리더십 랩 코파일럿입니다. 팀 관리, 코칭, 피드백, 변화 관리 등 리더십 현장의 고민을 말씀해 주세요. 실질적인 가이드를 드리겠습니다. 🤝</div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chatInput" placeholder="리더십 고민을 입력하세요..." onkeypress="handleKey(event)">
+          <button class="chat-send" id="chatSend" onclick="sendMessage()">전송</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="section-inner">
+    <div class="section-tag">07 · 학습 성과</div>
+    <h2 class="section-title">교육 이후 달라지는 것들</h2>
+    <p class="section-sub">이 프로그램은 '좋은 교육'이 아닌 '측정되는 변화'를 목표로 합니다.</p>
+    <div class="outcomes-grid">
+      <div class="outcome-card individual">
+        <div class="outcome-level">Level 1 · 개인 Individual</div>
+        <h3>자기 인식의<br>명확화</h3>
+        <ul class="outcome-items">
+          <li>강점 기반 리더십 스타일 명확화</li>
+          <li>자기 인식 & 감성 지능(EQ) 향상</li>
+          <li>AI 도구 활용 코칭 역량 강화</li>
+          <li>변화 대응력 & 회복 탄력성 증대</li>
+        </ul>
+        <div class="kpi-tag">KPI: EQ 자기평가 +20% 향상</div>
+      </div>
+      <div class="outcome-card team">
+        <div class="outcome-level">Level 2 · 팀 Team</div>
+        <h3>팀 문화의<br>질적 전환</h3>
+        <ul class="outcome-items">
+          <li>심리적 안정감 지수 개선</li>
+          <li>GROW 코칭 문화 일상화</li>
+          <li>피드백 빈도 및 질 향상</li>
+          <li>팀원 내재적 동기 & 몰입도 상승</li>
+        </ul>
+        <div class="kpi-tag">KPI: 팀 몰입도 설문 +15% 향상</div>
+      </div>
+      <div class="outcome-card org">
+        <div class="outcome-level">Level 3 · 조직 Organization</div>
+        <h3>조직 역량의<br>내재화</h3>
+        <ul class="outcome-items">
+          <li>리더십 파이프라인 강화</li>
+          <li>이직률 감소 & 핵심 인재 유지</li>
+          <li>변화 관리 역량 조직 내재화</li>
+          <li>HRD ROI 가시화 & 경영진 신뢰</li>
+        </ul>
+        <div class="kpi-tag">KPI: 6개월 내 성과 지표 개선 보고</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">08 · 문의하기</div>
+    <h2 class="section-title">귀사에 맞게 설계해 드립니다</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>4가지 방식으로<br>시작하세요</h3>
+        <p>집합 교육, 혼합 교육, 기업 맞춤 설계, 모듈 별 조합 설계 — 귀사의 상황에 가장 맞는 방식으로 제안드립니다. 투자 비용 안내 및 맞춤 제안서는 별도 협의로 제공됩니다.</p>
+        <div style="display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem;">
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(232,228,220,0.08);border-radius:3px;">
+            <span style="font-size:1.2rem">🏢</span>
+            <div><div style="font-weight:700;font-size:0.85rem;margin-bottom:0.2rem">집합 교육 (Offline)</div><div style="font-size:0.78rem;color:rgba(232,228,220,0.5)">1~2일 집중 워크숍 · 16~24명 권장</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(232,160,48,0.06);border:1px solid rgba(232,160,48,0.2);border-radius:3px;">
+            <span style="font-size:1.2rem">⭐</span>
+            <div><div style="font-weight:700;font-size:0.85rem;margin-bottom:0.2rem;color:var(--amber-light)">혼합 교육 (Blended) ★권장</div><div style="font-size:0.78rem;color:rgba(232,228,220,0.5)">사전 진단 + 집합 + AI 팔로우업 (30~90일)</div></div>
+          </div>
+        </div>
+
+      </div>
+      <div>
+        <form onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="field">
+              <label>성함</label>
+              <input type="text" id="fname" placeholder="홍길동" required>
+            </div>
+            <div class="field">
+              <label>회사명</label>
+              <input type="text" id="company" placeholder="(주)회사명" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label>직책</label>
+              <input type="text" id="role" placeholder="HRD 팀장">
+            </div>
+            <div class="field">
+              <label>연락처</label>
+              <input type="tel" id="phone" placeholder="010-0000-0000">
+            </div>
+          </div>
+          <div class="field">
+            <label>이메일</label>
+            <input type="email" id="email" placeholder="name@company.com" required>
+          </div>
+          <div class="field">
+            <label>관심 운영 형태</label>
+            <select id="format">
+              <option value="">선택해 주세요</option>
+              <option>집합 교육 (Offline)</option>
+              <option>혼합 교육 (Blended) ★권장</option>
+              <option>기업 맞춤 설계 (Customized)</option>
+              <option>모듈 별 조합 설계 (Modular)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>예상 인원 및 문의 내용</label>
+            <textarea id="message" placeholder="예상 참가 인원, 교육 일정, 특별 요구사항 등을 자유롭게 작성해 주세요."></textarea>
+          </div>
+          <div class="form-status" id="formStatus"></div>
+          <button type="submit" class="btn-primary" style="width:100%;margin-top:0.5rem;">문의 접수하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AI Leadership Lab</div>
+  <p class="footer-sub">
+    Knowing → Doing → Performance<br>
+    뇌과학 기반 학습 설계와 생성형 AI 코파일럿이 결합된 대한민국 팀장 리더십 전환 프로그램<br><br>
+    <a href="mailto:aude@aude.co.kr" style="color:var(--amber);text-decoration:none;">aude@aude.co.kr</a> · 010-3468-5249
+  </p>
+</footer>
+
+<script>
+// ── NAV ──
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  links.classList.toggle('open');
+}
+
+// ── TABS ──
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+  document.querySelectorAll('.module-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+// ── CHAT ──
+const SYSTEM_PROMPT = `당신은 AI 리더십 랩의 전문 AI 코파일럿입니다. 팀장 리더십, 코칭, 성과 관리, 변화 관리 전문가로서 실질적이고 구체적인 조언을 제공합니다.
+
+주요 프레임워크:
+- STPC 리더십 모델 (Self, Team, Performance, Change)
+- GROW 코칭 모델 (Goal, Reality, Options, Will)
+- AID/SBI 피드백 모델
+- 6 Box 성과 진단 모델
+- 존 코터 변화 관리 5단계 (긴장감, 비전, 구심체, 장애제거, 단기성과)
+- 심리적 안정감 (Amy Edmondson)
+- EQ 5요소 (Daniel Goleman)
+
+응답 스타일:
+- 한국어로 답변
+- 실무에서 바로 활용 가능한 구체적 스크립트나 예시 포함
+- 간결하고 명확하게, 200-300자 내외로 답변
+- 필요 시 프레임워크를 활용해 구조화된 가이드 제공`;
+
+async function callClaude(userMessage) {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMessage }]
+    })
+  });
+  const data = await response.json();
+  return data.content?.[0]?.text || '죄송합니다. 잠시 후 다시 시도해 주세요.';
+}
+
+function addMsg(role, text) {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = `msg ${role === 'user' ? 'user' : ''}`;
+  div.innerHTML = `<div class="msg-avatar ${role === 'user' ? 'user' : 'ai'}">${role === 'user' ? '나' : 'AI'}</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function addTyping() {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'msg'; div.id = 'typing';
+  div.innerHTML = `<div class="msg-avatar ai">AI</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  body.appendChild(div); body.scrollTop = body.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('chatSend');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = ''; btn.disabled = true;
+  addMsg('user', text);
+  addTyping();
+  try {
+    const reply = await callClaude(text);
+    removeTyping(); addMsg('ai', reply);
+  } catch(e) {
+    removeTyping(); addMsg('ai', '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+  }
+  btn.disabled = false;
+  document.getElementById('chatInput').focus();
+}
+
+function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
+function setPrompt(text) { document.getElementById('chatInput').value = text; document.getElementById('chatInput').focus(); }
+
+// ── FORM ──
+function submitForm(e) {
+  e.preventDefault();
+  const status = document.getElementById('formStatus');
+  const fname = document.getElementById('fname').value.trim();
+  const company = document.getElementById('company').value.trim();
+  const role = document.getElementById('role').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const format = document.getElementById('format').value;
+  const message = document.getElementById('message').value.trim();
+
+  if (!fname || !company || !email) {
+    status.textContent = '필수 항목(성함, 회사명, 이메일)을 모두 입력해 주세요.';
+    status.className = 'form-status error';
+    return;
+  }
+
+  // Compose email body
+  const subject = encodeURIComponent(`[AI 리더십 랩] 교육 문의 - ${company} ${fname}`);
+  const body = encodeURIComponent(
+`AI 리더십 랩 교육 문의가 접수되었습니다.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  문의자 정보
+━━━━━━━━━━━━━━━━━━━━━━━━
+• 성함: ${fname}
+• 회사명: ${company}
+• 직책: ${role || '미입력'}
+• 연락처: ${phone || '미입력'}
+• 이메일: ${email}
+• 관심 운영 형태: ${format || '미선택'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  문의 내용
+━━━━━━━━━━━━━━━━━━━━━━━━
+${message || '(별도 내용 없음)'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+문의 접수 시각: ${new Date().toLocaleString('ko-KR')}
+`);
+
+  // Open mailto
+  window.location.href = `mailto:Brandon.DH.Yoon@gmail.com?subject=${subject}&body=${body}`;
+
+  status.textContent = `${fname}님의 문의 내용이 이메일로 전송됩니다. 이메일 앱이 열리면 '보내기'를 눌러주세요.`;
+  status.className = 'form-status success';
+  e.target.reset();
+  setTimeout(() => { status.className = 'form-status'; }, 8000);
+}
+
+// ── DOWNLOAD PDF ──
+function downloadPDF(e) {
+  e.preventDefault();
+  // Direct download of the PDF file
+  const a = document.createElement('a');
+  a.href = 'AI_Leadership_Lab_Proposal_v3.pdf';
+  a.download = 'AI_Leadership_Lab_Proposal_v3.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Visual feedback
+  const btn = e.currentTarget;
+  const orig = btn.innerHTML;
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 다운로드 시작되었습니다`;
+  btn.style.background = 'rgba(42,157,143,0.15)';
+  btn.style.borderColor = 'rgba(42,157,143,0.4)';
+  btn.style.color = '#52c5b7';
+  setTimeout(() => { btn.innerHTML = orig; btn.style = ''; }, 3000);
+}
+
+// ── SCROLL ANIMATIONS ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.why-card, .aefc-card, .topic-card, .copilot-card, .outcome-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
